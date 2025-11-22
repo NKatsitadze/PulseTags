@@ -1,14 +1,8 @@
 @import "tailwindcss";
 
-html {
-  color-scheme: light;
-  -webkit-text-rendering: optimizeLegibility;
-  text-rendering: optimizeLegibility;
-}
-
 :root {
   --background: #ffffff;
-  --foreground: #1C1C1C;
+  --foreground: #000000;
 }
 
 @theme inline {
