@@ -10,6 +10,7 @@ import type {
   Strategy,
 } from "@/types/hashtag";
 
+// Supported platforms
 const PLATFORMS: { id: Platform; label: string }[] = [
   { id: "instagram", label: "Instagram" },
   { id: "tiktok", label: "TikTok" },
@@ -20,6 +21,7 @@ const PLATFORMS: { id: Platform; label: string }[] = [
   { id: "pinterest", label: "Pinterest" },
 ];
 
+// Supported languages
 const LANGUAGES = [
   "English",
   "Spanish",
@@ -33,6 +35,7 @@ const LANGUAGES = [
   "Japanese",
 ];
 
+// Supported locations (regions)
 const LOCATIONS = [
   "Global",
   "United States",
@@ -54,6 +57,7 @@ const LOCATIONS = [
   "Saudi Arabia",
 ];
 
+// Strategies
 const STRATEGIES: { id: Strategy; label: string; hint: string }[] = [
   { id: "balanced", label: "Balanced", hint: "Mix of trending, niche & evergreen" },
   { id: "trending", label: "Trending", hint: "Focus on high discovery & virality" },
@@ -71,11 +75,13 @@ export default function HomePage() {
   const [error, setError] = useState<string | null>(null);
   const [copyMessage, setCopyMessage] = useState<string | null>(null);
 
+  // Progress bar state
   const [progress, setProgress] = useState<number>(0);
   const [showProgressBar, setShowProgressBar] = useState<boolean>(false);
 
   const remaining = 500 - description.length;
 
+  // Animate progress bar while loading
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
@@ -90,6 +96,7 @@ export default function HomePage() {
         });
       }, 300);
     } else {
+      // Finish animation
       setProgress(200);
       setTimeout(() => setShowProgressBar(false), 400);
     }
@@ -97,17 +104,20 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, [loading]);
 
+  // Visual bar color based on score
   const scoreColor = (score: number) => {
     if (score >= 70) return "bg-emerald-500";
     if (score >= 40) return "bg-amber-500";
     return "bg-rose-500";
   };
 
+  // Copy feedback
   const showCopyMessage = (msg: string) => {
     setCopyMessage(msg);
     setTimeout(() => setCopyMessage(null), 2000);
   };
 
+  // Copy hashtags
   const copyHashtags = async (list: HashtagSuggestion[]) => {
     if (!list.length) return;
 
@@ -124,6 +134,7 @@ export default function HomePage() {
   const onCopyTopFive = () =>
     copyHashtags([...hashtags].sort((a, b) => b.viralScore - a.viralScore).slice(0, 5));
 
+  // Generate hashtags
   const onGenerate = async () => {
     if (!description.trim()) {
       setError("Please describe your post before generating hashtags.");
@@ -176,34 +187,34 @@ export default function HomePage() {
 
       <div className={styles.shell}>
 
-        {/* HEADER */}
+        {/* Header */}
         <header className="mb-6 flex items-center gap-4">
           <div className={styles.logoPlaceholder}>
             <img src="pulsetags.png" alt="logo" />
           </div>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-semibold text-foreground">
+            <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900">
               PulseTags
             </h1>
-            <p className="text-sm sm:text-base text-foreground-muted mt-1">
-              Generate smart, platform-aware hashtags with explanations, viral scores, languages & location targeting.
+            <p className="text-sm sm:text-base text-slate-500 mt-1">
+              Generate smart, platform-aware hashtags with explanations,
+              viral scores, languages & location targeting.
             </p>
           </div>
         </header>
 
-        {/* FEATURE CHIPS */}
-        <div className="mb-6 flex flex-wrap gap-2 text-xs text-foreground-soft">
-          <span className="rounded-full bg-background px-3 py-1 border border-soft">✨ Multilingual hashtags</span>
-          <span className="rounded-full bg-background px-3 py-1 border border-soft">🌍 Location-based generation</span>
-          <span className="rounded-full bg-background px-3 py-1 border border-soft">📊 Viral score per hashtag</span>
+        {/* Feature chips */}
+        <div className="mb-6 flex flex-wrap gap-2 text-xs text-slate-600">
+          <span className="rounded-full bg-white px-3 py-1 border border-slate-200">✨ Multilingual hashtags</span>
+          <span className="rounded-full bg-white px-3 py-1 border border-slate-200">🌍 Location-based generation</span>
+          <span className="rounded-full bg-white px-3 py-1 border border-slate-200">📊 Viral score per hashtag</span>
         </div>
 
-        {/* MAIN CARD */}
-        <section className={`${styles.card} bg-card border border-soft`}>
-
-          {/* DESCRIPTION */}
+        {/* Main card */}
+        <section className={styles.card}>
+          {/* Description */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-foreground-soft mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               Describe your post
             </label>
 
@@ -213,18 +224,18 @@ export default function HomePage() {
                 if (e.target.value.length <= 500) setDescription(e.target.value);
               }}
               placeholder="Example: A cozy morning coffee routine TikTok..."
-              className="w-full min-h-[110px] rounded-lg border border-soft bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 text-foreground"
+              className="w-full min-h-[110px] rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400"
             />
 
-            <div className="mt-1 flex justify-between text-xs text-foreground-muted">
+            <div className="mt-1 flex justify-between text-xs text-slate-500">
               <span>Up to 500 characters</span>
               <span>{remaining} left</span>
             </div>
           </div>
 
-          {/* PLATFORMS */}
+          {/* Platform buttons */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-foreground-soft mb-2">Platform</label>
+            <label className="block text-sm font-medium text-slate-700 mb-2">Platform</label>
             <div className="flex flex-wrap gap-2">
               {PLATFORMS.map((p) => (
                 <button
@@ -233,7 +244,7 @@ export default function HomePage() {
                   className={`px-3 py-1.5 rounded-full text-xs border transition ${
                     p.id === platform
                       ? "bg-indigo-600 text-white border-indigo-600 shadow-sm"
-                      : "bg-background text-foreground-soft border-soft hover:border-indigo-300"
+                      : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300"
                   }`}
                 >
                   {p.label}
@@ -242,16 +253,15 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* LANGUAGE / LOCATION / STRATEGY */}
+          {/* Language + Location + Strategy */}
           <div className="mb-6 grid gap-4 sm:grid-cols-3">
-
             {/* Language */}
             <div>
-              <label className="block text-sm font-medium text-foreground-soft mb-2">Language</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Language</label>
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
-                className="w-full rounded-lg border border-soft bg-card px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-400 text-foreground"
+                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-400"
               >
                 {LANGUAGES.map((lang) => <option key={lang}>{lang}</option>)}
               </select>
@@ -259,11 +269,11 @@ export default function HomePage() {
 
             {/* Location */}
             <div>
-              <label className="block text-sm font-medium text-foreground-soft mb-2">Target Location</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Target Location</label>
               <select
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                className="w-full rounded-lg border border-soft bg-card px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-400 text-foreground"
+                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-400"
               >
                 {LOCATIONS.map((loc) => <option key={loc}>{loc}</option>)}
               </select>
@@ -271,7 +281,7 @@ export default function HomePage() {
 
             {/* Strategy */}
             <div>
-              <label className="block text-sm font-medium text-foreground-soft mb-2">Hashtag style</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Hashtag style</label>
               <div className="flex flex-wrap gap-2">
                 {STRATEGIES.map((s) => (
                   <button
@@ -280,20 +290,20 @@ export default function HomePage() {
                     className={`px-3 py-1.5 rounded-full text-xs border transition ${
                       strategy === s.id
                         ? "bg-indigo-50 text-indigo-700 border-indigo-400"
-                        : "bg-background text-foreground-soft border-soft hover:border-indigo-300"
+                        : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300"
                     }`}
                   >
                     {s.label}
                   </button>
                 ))}
               </div>
-              <p className="mt-1 text-xs text-foreground-muted">
+              <p className="mt-1 text-xs text-slate-500">
                 {STRATEGIES.find((s) => s.id === strategy)?.hint}
               </p>
             </div>
           </div>
 
-          {/* GENERATE BUTTON */}
+          {/* Generate button */}
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <button
               onClick={onGenerate}
@@ -314,22 +324,22 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* RESULTS */}
+        {/* Results */}
         {hashtags.length > 0 && (
           <section className="mt-8">
             <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <h2 className="text-sm font-medium text-foreground-soft">Suggested hashtags</h2>
+              <h2 className="text-sm font-medium text-slate-700">Suggested hashtags</h2>
 
               <div className="flex flex-wrap gap-2 text-xs">
                 <button
                   onClick={onCopyAll}
-                  className="rounded-full border border-soft bg-card px-3 py-1 hover:border-indigo-300"
+                  className="rounded-full border border-slate-200 bg-white px-3 py-1 hover:border-indigo-300"
                 >
                   Copy all
                 </button>
                 <button
                   onClick={onCopyTopFive}
-                  className="rounded-full border border-soft bg-card px-3 py-1 hover:border-indigo-300"
+                  className="rounded-full border border-slate-200 bg-white px-3 py-1 hover:border-indigo-300"
                 >
                   Copy top 5 most viral
                 </button>
@@ -340,27 +350,25 @@ export default function HomePage() {
               {hashtags.map((item, idx) => (
                 <article
                   key={idx}
-                  className="rounded-xl border border-soft bg-card p-3.5 shadow-sm"
+                  className="rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm"
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-sm font-semibold truncate text-foreground">
-                      {item.tag}
-                    </h3>
-                    <span className="text-xs text-foreground-muted">
-                      Viral score: <span className="text-foreground">{item.viralScore}</span>
+                    <h3 className="text-sm font-semibold truncate">{item.tag}</h3>
+                    <span className="text-xs text-slate-500">
+                      Viral score: <span className="text-slate-900">{item.viralScore}</span>
                     </span>
                   </div>
 
-                  <p className="text-xs text-foreground-soft mb-3">{item.explanation}</p>
+                  <p className="text-xs text-slate-600 mb-3">{item.explanation}</p>
 
                   <div>
-                    <div className="h-1.5 w-full rounded-full bg-black/10 overflow-hidden">
+                    <div className="h-1.5 w-full rounded-full bg-slate-200 overflow-hidden">
                       <div
                         className={`h-full rounded-full ${scoreColor(item.viralScore)}`}
                         style={{ width: `${item.viralScore}%` }}
                       />
                     </div>
-                    <p className="text-[10px] uppercase tracking-wide text-foreground-muted mt-1">
+                    <p className="text-[10px] uppercase tracking-wide text-slate-500 mt-1">
                       visual viral potential
                     </p>
                   </div>
