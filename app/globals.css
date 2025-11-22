@@ -24,3 +24,33 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Stable text and background utilities */
+.text-foreground {
+  color: var(--foreground) !important;
+}
+
+.text-foreground-soft {
+  color: rgba(0, 0, 0, 0.65) !important;
+}
+
+.text-foreground-muted {
+  color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.bg-background {
+  background: var(--background) !important;
+}
+
+.bg-card {
+  background: #ffffff !important; /* for cards */
+}
+
+.border-soft {
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+html {
+  color-scheme: light !important;
+  background: #ffffff !important;
+}
